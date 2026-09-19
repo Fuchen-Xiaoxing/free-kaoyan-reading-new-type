@@ -1,0 +1,30 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.class
+*.so
+
+# Environment variables & local secrets
+.env
+.env.local
+
+# Temporary files
+tmp/
+*.tmp
+*.log
+_-*/
+_*/
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+
+# 错题本本地沉淀
+错题本.md
+新题型错题本.md
+*.bak
+
+# 本地开发背景资料（不上传远程仓库）
+初期资料/
+
