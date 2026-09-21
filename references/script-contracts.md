@@ -5,7 +5,7 @@
 > ⚠️ **【强约束】AI 严禁调用 view_file / grep 查看 `scripts/` 目录下的 Python 源码文件。所有脚本调用方式、参数和 JSON Schema 完全以本契约规范为准，直接构造 JSON 与执行命令行。只有脚本报错且 stderr 无法定位时，才允许定点查看报错位置。**
 >
 > 📁 **输入模式与传参约定（针对 Android / PRoot 环境优化）**：
-> - **批量数据优先写临时文件传路径（最推荐）**：由于移动端（Android / Open Minis / PRoot）环境下的 shell 执行工具有单条命令长度上限（约 1000 字符），且禁止使用 heredoc 管道（如 `cat << 'EOF'`），而全篇词汇列表（25~30 词约 2.5KB）与错题归档数组（约 4~7KB）均远超该限制。因此，**词汇批量导入与错题归档默认优先通过 `file_write` 单步写入临时文件（如 `tmp/free-kaoyan-reading-new-type/<本篇唯一ID>/...json` 或系统 tmp 目录）并传文件路径调用**。
+> - **批量数据优先写临时文件传路径（最推荐）**：由于移动端（Android / Open Minis / PRoot）环境下的 shell 执行工具有单条命令长度上限（约 1000 字符），且禁止使用 heredoc 管道（如 `cat << 'EOF'`），而全篇词汇列表（25~30 词约 2.5KB）与错题归档数组（约 4~7KB）均远超该限制。因此，**词汇批量导入与错题归档默认优先通过 `file_write` 单步写入临时文件并传文件路径调用**。临时文件路径必须使用工作区相对路径（如 `tmp/free-kaoyan-new-type/<本篇唯一ID>/error.json`）或工作区内合法路径（如 `/var/minis/workspace/tmp/free-kaoyan-new-type/<本篇唯一ID>/...`），**严禁直接使用系统根目录 `/tmp/...`（在 Android / Open Minis 等沙箱容器中无法解析，会导致工具调用报错）**。
 > - **脚本原生自愈与自动清理（零残留）**：**严禁在 shell 额外调用 `mkdir -p`**（脚本内部已原生支持父目录自动递归创建）。`record_error.py` 与 `memo_import.py` 处理临时文件成功后**默认自动删除输入 JSON 临时文件及其变空的临时父目录**（`--keep-json` 可保留），实现**无残留安全闭环**，完全无需调用方手动清理。
 > - **直接参数/管道模式**：命令行直接传参 `--json '<JSON字符串>'` 或 stdin 管道输入仅适用于单条轻量查询（如 `--query` 或极简验证）以及无命令行长度约束的桌面环境。
 
